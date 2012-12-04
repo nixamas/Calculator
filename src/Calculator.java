@@ -16,23 +16,34 @@ public class Calculator {
 			String[] tokens = exp.split(" ");
 			for (String token : tokens) {
 				try {
-					// token is number
-					int num = Integer.parseInt(token);
-					stack.push(num);
+					handleNumber(token, stack);
 				} catch (NumberFormatException nfe) {
 					handleOperation(token, stack);
 				}
 			}
-			if (stack.size() > 1) {
-				System.err.println("Error: elements left in stack");
-				System.err.println(stack);
-			} else {
-				System.out.println("Expression calculates to: " + stack.pop());
-			}
+			handleStack(stack);
 		}
 	}
+	
+	private static void handleStack(Stack<Integer> stack){
+		if (stack.size() > 1) {
+			System.err.println("Error: elements left in stack");
+			System.err.println(stack);
+		} else {
+			System.out.println("Expression calculates to: " + stack.pop());
+		}
+	}
+	
+	private static void handleNumber(String token, Stack<Integer> stack){
+		try{
+			stack.push( Integer.parseInt(token) );
+		}catch(NumberFormatException nfe){
+			throw nfe;
+		}
+		
+	}
 
-	public static void handleOperation(String op, Stack<Integer> stack) {
+	private static void handleOperation(String op, Stack<Integer> stack) {
 			int rslt = 0, num1, num2;
 			switch (op) {
 				case "+":
