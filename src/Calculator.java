@@ -8,21 +8,29 @@ public class Calculator {
 
 		if (args.length != 1) {
 			System.err.println(args.length);
-			System.err.println("Usage: Calculator <expression>");
+			System.err.println("Usage: Calculator <expression> invalid");
 		} else {
-			Stack<Integer> stack = new Stack<Integer>();
-			String exp = args[0];
-			System.out.println("Entered Expression: " + exp);
-			String[] tokens = exp.split(" ");
-			for (String token : tokens) {
-				try {
-					handleNumber(token, stack);
-				} catch (NumberFormatException nfe) {
-					handleOperation(token, stack);
-				}
-			}
-			handleStack(stack);
+			System.out.println("Entered Expression: " + args[0]);
+			calculate(args[0]);
 		}
+	}
+	
+	
+	private static void calculate(String exp){
+		Stack<Integer> stack = new Stack<Integer>();
+		
+		String[] tokens = exp.split(" ");
+		for (String token : tokens) {
+			try{
+				if(!handleNumber(token, stack) && !handleOperator(token, stack)){
+						System.out.println("ILLEGAL ARGUMENT");
+						throw new IllegalArgumentException("Error: Invalid Argument in Expression");
+				}
+			}catch(IllegalArgumentException iae){
+				System.err.println(iae);
+			}
+		}
+		handleStack(stack);
 	}
 	
 	private static void handleStack(Stack<Integer> stack){
@@ -34,16 +42,18 @@ public class Calculator {
 		}
 	}
 	
-	private static void handleNumber(String token, Stack<Integer> stack){
+	private static boolean handleNumber(String token, Stack<Integer> stack){
 		try{
 			stack.push( Integer.parseInt(token) );
+			return true;
 		}catch(NumberFormatException nfe){
-			throw nfe;
+			return false;
 		}
 		
 	}
 
-	private static void handleOperation(String op, Stack<Integer> stack) {
+	private static boolean handleOperator(String op, Stack<Integer> stack) {
+			boolean state = true;
 			int rslt = 0, num1, num2;
 			switch (op) {
 				case "+":
@@ -68,7 +78,9 @@ public class Calculator {
 					break;
 				default:
 					System.err.println("Error: Invalid operator - " + op);
+					state = false;
 					break;
 			}
+			return state;
 	}
 }
