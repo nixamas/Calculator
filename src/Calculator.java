@@ -20,14 +20,7 @@ public class Calculator {
 					int num = Integer.parseInt(token);
 					stack.push(num);
 				} catch (NumberFormatException nfe) {
-					if (token.equalsIgnoreCase("+")	|| token.equalsIgnoreCase("-") || token.equalsIgnoreCase("*") || token.equalsIgnoreCase("/")) {
-						// token is operator
-						int opRslt = performOperation(token, stack.pop(), stack.pop());
-						stack.push(opRslt);
-					} else {
-						// token is not number or operator
-						System.err.println("Error: Invalid operator - " + token);
-					}
+					stack = handleOperation(token, stack);
 				}
 			}
 			if (stack.size() > 1) {
@@ -39,25 +32,35 @@ public class Calculator {
 		}
 	}
 
-	public static int performOperation(String op, int param1, int param2) {
-		int rslt = 0;
-		switch (op) {
-		case "+":
-			rslt = param1 + param2;
-			break;
-		case "-":
-			rslt = param1 - param2;
-			break;
-		case "*":
-			rslt = param1 * param2;
-			break;
-		case "/":
-			rslt = param1 / param2;
-			break;
-		default:
-			System.err.println("Error: Invalid operator - " + op);
-			break;
+	public static Stack<Integer> handleOperation(String op, Stack<Integer> stack) {
+		if(stack.size() >= 2){
+			int rslt = 0, num1 = stack.pop(), num2 = stack.pop();
+			switch (op) {
+				case "+":
+					rslt = num1 + num2;
+					stack.push(rslt);
+					break;
+				case "-":
+					rslt = num1 - num2;
+					stack.push(rslt);
+					break;
+				case "*":
+					rslt = num1 * num2;
+					stack.push(rslt);
+					break;
+				case "/":
+					rslt = num1 / num2;
+					stack.push(rslt);
+					break;
+				default:
+					System.err.println("Error: Invalid operator - " + op);
+					stack.push(num2);
+					stack.push(num1);
+					break;
+			}
+		}else{
+			System.err.println("Error: Not enough elements in stack");
 		}
-		return rslt;
+		return stack;
 	}
 }
