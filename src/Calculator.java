@@ -16,7 +16,7 @@ public class Calculator {
 	}
 	
 	
-	private static void calculate(String exp){
+	public static int calculate(String exp){
 		Stack<Integer> stack = new Stack<Integer>();
 		
 		String[] tokens = exp.split(" ");
@@ -30,19 +30,22 @@ public class Calculator {
 				System.err.println(iae);
 			}
 		}
-		handleStack(stack);
+		return handleStack(stack);
 	}
 	
-	private static void handleStack(Stack<Integer> stack){
+	public static int handleStack(Stack<Integer> stack){
+		int result = 0;
 		if (stack.size() > 1) {
 			System.err.println("Error: elements left in stack");
 			System.err.println(stack);
 		} else {
-			System.out.println("Expression calculates to: " + stack.pop());
+			result = stack.pop();
+			System.out.println("Expression calculates to: " + result);
 		}
+		return result;
 	}
 	
-	private static boolean handleNumber(String token, Stack<Integer> stack){
+	public static boolean handleNumber(String token, Stack<Integer> stack){
 		try{
 			stack.push( Integer.parseInt(token) );
 			return true;
@@ -52,7 +55,7 @@ public class Calculator {
 		
 	}
 
-	private static boolean handleOperator(String op, Stack<Integer> stack) {
+	public static boolean handleOperator(String op, Stack<Integer> stack) {
 			boolean state = true;
 			int rslt = 0, num1, num2;
 			switch (op) {
