@@ -20,7 +20,7 @@ public class Calculator {
 					int num = Integer.parseInt(token);
 					stack.push(num);
 				} catch (NumberFormatException nfe) {
-					stack = handleOperation(token, stack);
+					handleOperation(token, stack);
 				}
 			}
 			if (stack.size() > 1) {
@@ -32,35 +32,32 @@ public class Calculator {
 		}
 	}
 
-	public static Stack<Integer> handleOperation(String op, Stack<Integer> stack) {
-		if(stack.size() >= 2){
-			int rslt = 0, num1 = stack.pop(), num2 = stack.pop();
+	public static void handleOperation(String op, Stack<Integer> stack) {
+			int rslt = 0, num1, num2;
 			switch (op) {
 				case "+":
+					num1 = stack.pop(); num2 = stack.pop();
 					rslt = num1 + num2;
 					stack.push(rslt);
 					break;
 				case "-":
+					num1 = stack.pop(); num2 = stack.pop();
 					rslt = num1 - num2;
 					stack.push(rslt);
 					break;
 				case "*":
+					num1 = stack.pop(); num2 = stack.pop();
 					rslt = num1 * num2;
 					stack.push(rslt);
 					break;
 				case "/":
+					num1 = stack.pop(); num2 = stack.pop();
 					rslt = num1 / num2;
 					stack.push(rslt);
 					break;
 				default:
 					System.err.println("Error: Invalid operator - " + op);
-					stack.push(num2);
-					stack.push(num1);
 					break;
 			}
-		}else{
-			System.err.println("Error: Not enough elements in stack");
-		}
-		return stack;
 	}
 }
