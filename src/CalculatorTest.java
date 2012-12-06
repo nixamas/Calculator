@@ -21,7 +21,12 @@ public class CalculatorTest {
 	
 	@Test 
 	public void handleOperatorMustHandleOperators(){
-		
+		Stack<Integer> stack = new Stack<Integer>();
+		stack.push(42);
+		stack.push(53);
+		assertTrue(Calculator.handleOperator("+", stack));
+		stack.push(23);
+		assertFalse(Calculator.handleOperator("%", stack));
 	}
 
 }

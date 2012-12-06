@@ -55,34 +55,30 @@ public class Calculator {
 		
 	}
 
-	public static boolean handleOperator(String op, Stack<Integer> stack) {
+	public static boolean handleOperator(String operator, Stack<Integer> stack) {
 			boolean state = true;
 			int rslt = 0, num1, num2;
-			switch (op) {
+			Operator op = null;
+			switch (operator) {
 				case "+":
-					num1 = stack.pop(); num2 = stack.pop();
-					rslt = num1 + num2;
-					stack.push(rslt);
+					op = new Add();
 					break;
 				case "-":
-					num1 = stack.pop(); num2 = stack.pop();
-					rslt = num1 - num2;
-					stack.push(rslt);
+					op = new Subtract();
 					break;
 				case "*":
-					num1 = stack.pop(); num2 = stack.pop();
-					rslt = num1 * num2;
-					stack.push(rslt);
+					op = new Multiply();
 					break;
 				case "/":
-					num1 = stack.pop(); num2 = stack.pop();
-					rslt = num1 / num2;
-					stack.push(rslt);
+					op = new Divide();
 					break;
 				default:
-					System.err.println("Error: Invalid operator - " + op);
+					System.err.println("Error: Invalid operator - " + operator);
 					state = false;
 					break;
+			}
+			if(op != null){
+				stack.push(op.operate(stack.pop(), stack.pop()));
 			}
 			return state;
 	}
